@@ -1,10 +1,10 @@
 from flask import Flask, jsonify
-from sqlalchemy import create_engine, select
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from sqlalchemy import select
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 from sqlalchemy.orm import Session
 
-from database import engine
-from models import Base, User
+from database.database import engine
+from database.models import User
 from routes.login import login_bp
 
 app = Flask(__name__)

@@ -1,11 +1,10 @@
-import bcrypt
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from database import engine
-from models import User
+from database.database import engine
+from database.models import User
 
 login_bp = Blueprint('login', __name__)
 
