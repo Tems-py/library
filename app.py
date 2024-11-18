@@ -9,14 +9,13 @@ from routes.login import login_bp
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = 'duduududuauewu12332132131duahduawhudwahuidhawuidhauiwbnduiawbnduwanbdawnjdawnjdawnujdan2'
-app.config["JWT_SECRET_KEY"] = '73127838128y31y331231231228y123'
+app.config['SECRET_KEY'] = '123'
+app.config["JWT_SECRET_KEY"] = '123'
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 
 app.register_blueprint(login_bp, url_prefix='/login')
 
 jwt = JWTManager(app)
-
 
 @app.route('/')
 @jwt_required()

@@ -13,7 +13,7 @@ class Base(DeclarativeBase):
 
 class User(Base):
     __tablename__ = "users"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, auto_increment=True)
     name: Mapped[str] = mapped_column(String(64))
     login: Mapped[str] = mapped_column(String(64))
     password: Mapped[str] = mapped_column(String(1024))
@@ -24,32 +24,34 @@ class User(Base):
 
 class Series(Base):
     __tablename__ = "series"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, auto_increment=True)
     name: Mapped[str] = mapped_column(String(64))
+    books: Mapped[List["Book"]] = relationship(back_populates="series")
 
     def __repr__(self) -> str:
         return f"Series(id={self.id!r}, name={self.name!r})"
 
 class Publisher(Base):
     __tablename__ = "publishers"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, auto_increment=True)
     name: Mapped[str] = mapped_column(String(128))
     color: Mapped[str] = mapped_column(String(8))
+    books: Mapped[List["Book"]] = relationship(back_populates="publisher")
 
     def __repr__(self) -> str:
         return f"Publisher(id={self.id!r}, name={self.name!r})"
 
 class Book(Base):
     __tablename__ = "books"
-    id: Mapped[int] = mapped_column(primary_key=True)
+    id: Mapped[int] = mapped_column(primary_key=True, auto_increment=True)
     title: Mapped[str] = mapped_column(String(128))
     author: Mapped[str] = mapped_column(String(128))
     series_id: Mapped[int] = mapped_column(ForeignKey("series.id"))
-    series: Mapped["series"] = relationship("Series", back_populates="books")
+    series: Mapped["Series"] = relationship("Series", back_populates="books")
     pages: Mapped[int] = mapped_column(Integer)
     cover: Mapped[bool] = mapped_column(Boolean)
     publisher_id: Mapped[int] = mapped_column(ForeignKey("publishers.id"))
-    publisher: Mapped["publisher"] = relationship("Publisher", back_populates="books")
+    publisher: Mapped["Publisher"] = relationship("Publisher", back_populates="books")
 
 
     def __repr__(self) -> str:
