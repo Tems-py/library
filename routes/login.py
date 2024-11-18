@@ -4,12 +4,12 @@ from flask_jwt_extended import create_access_token
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from app import engine
+from database import engine
 from models import User
 
-login = Blueprint('login', __name__)
+login_bp = Blueprint('login', __name__)
 
-@login.route('/', methods=['POST'])
+@login_bp.route('/', methods=['POST'])
 def login():
     data = request.get_json()
     username = data['username']
@@ -28,6 +28,6 @@ def login():
     else:
         return jsonify({'message': 'Login Failed'}), 401
 
-@login.route("/logut")
+@login_bp.route("/logut")
 def logout():
     pass

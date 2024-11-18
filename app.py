@@ -3,8 +3,9 @@ from sqlalchemy import create_engine, select
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 from sqlalchemy.orm import Session
 
+from database import engine
 from models import Base, User
-from routes.login import login
+from routes.login import login_bp
 
 app = Flask(__name__)
 
@@ -12,12 +13,10 @@ app.config['SECRET_KEY'] = 'duduududuauewu12332132131duahduawhudwahuidhawuidhaui
 app.config["JWT_SECRET_KEY"] = '73127838128y31y331231231228y123'
 app.config['JWT_TOKEN_LOCATION'] = ['headers']
 
-app.register_blueprint(login, url_prefix='/login')
+app.register_blueprint(login_bp, url_prefix='/login')
 
 jwt = JWTManager(app)
 
-engine = create_engine("sqlite:///database.db", echo=True)
-Base.metadata.create_all(bind=engine)
 
 @app.route('/')
 @jwt_required()
