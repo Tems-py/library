@@ -1,7 +1,7 @@
 from typing import List
 from typing import Optional
 
-from sqlalchemy import ForeignKey, Integer, Boolean
+from sqlalchemy import ForeignKey, Integer, Boolean, Float
 from sqlalchemy import String
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy.orm import Mapped
@@ -31,6 +31,14 @@ class Series(Base):
     def __repr__(self) -> str:
         return f"Series(id={self.id!r}, name={self.name!r})"
 
+class Author(Base):
+    __tablename__ = "authors"
+    id: Mapped[int] = mapped_column(primary_key=True, auto_increment=True)
+    name: Mapped[str] = mapped_column(String(64))
+    surname: Mapped[str] = mapped_column(String(64))
+    books: Mapped[List["Book"]] = relationship(back_populates="author")
+
+
 class Publisher(Base):
     __tablename__ = "publishers"
     id: Mapped[int] = mapped_column(primary_key=True, auto_increment=True)
@@ -45,9 +53,11 @@ class Book(Base):
     __tablename__ = "books"
     id: Mapped[int] = mapped_column(primary_key=True, auto_increment=True)
     title: Mapped[str] = mapped_column(String(128))
-    author: Mapped[str] = mapped_column(String(128))
+    author_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
+    author: Mapped["Author"] = relationship("Author", back_populates="books")
     series_id: Mapped[int] = mapped_column(ForeignKey("series.id"))
     series: Mapped["Series"] = relationship("Series", back_populates="books")
+    part: Mapped[float] = mapped_column(Float)
     pages: Mapped[int] = mapped_column(Integer)
     cover: Mapped[bool] = mapped_column(Boolean)
     publisher_id: Mapped[int] = mapped_column(ForeignKey("publishers.id"))
